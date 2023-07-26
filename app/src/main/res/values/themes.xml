@@ -1,0 +1,12 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <!-- Base application theme. -->
+    <style name="Base.Theme.SkySense" parent="Theme.Material3.DayNight">
+        <!-- Customize your light theme here. -->
+        <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
+        <item name="colorPrimary">#00B0FF</item>
+        <item name="colorPrimaryDark">#0036FF</item>
+        <item name="colorAccent">#E91E63</item>
+    </style>
+
+    <style name="Theme.SkySense" parent="Base.Theme.SkySense" />
+</resources>

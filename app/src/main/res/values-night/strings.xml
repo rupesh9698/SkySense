@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="city_name">City Name</string>
+    <string name="enter_city_name">Enter City Name</string>
+    <string name="temperature">18 °C</string>
+    <string name="avg_temperature">18–22 °C</string>
+    <string name="condition">Condition</string>
+    <string name="today_s_weather_forecast">Today\'s Weather Forecast</string>
+    <string name="time">Time</string>
+    <string name="humidity_long">Humidity: 86</string>
+    <string name="wind_speed_long">Wind Speed: 28.4 kph</string>
+    <string name="wind_speed_short">WS: 28.4 kph</string>
+    <string name="date">Date</string>
+    <string name="this_week_s_weather_forecast">This Week\'s Weather Forecast</string>
+    <string name="updated_at">UPDATED AT</string>
+    <string name="sunday_04_18_pm">SUNDAY 04:18 PM</string>
+    <string name="select_favourite">Select Favourite</string>
+    <string name="current_temperature_unit">currentTemperatureUnit</string>
+    <string name="add_to_favourite">AddToFavourite</string>
+</resources>
