@@ -28,23 +28,28 @@
             android:orientation="vertical">
 
             <com.google.android.material.card.MaterialCardView
+                android:id="@+id/cardSearch"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="30dp"
                 android:layout_marginBottom="10dp"
                 android:layout_marginStart="10dp"
                 android:layout_marginEnd="10dp"
-                card_view:cardBackgroundColor="@color/white"
                 app:cardCornerRadius="8dp"
                 app:cardElevation="4dp">
 
-                <androidx.fragment.app.FragmentContainerView
+                <FrameLayout
                     android:id="@+id/autocomplete_fragment"
-                    android:name="com.google.android.libraries.places.widget.AutocompleteSupportFragment"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="56dp"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:foreground="?attr/selectableItemBackground"
+                    android:paddingStart="16dp"
+                    android:paddingEnd="16dp" />
 
             </com.google.android.material.card.MaterialCardView>
+
 
             <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"
