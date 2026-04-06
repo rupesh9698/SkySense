@@ -3,7 +3,7 @@
   <component name="AppInsightsSettings">
     <option name="tabSettings">
       <map>
-        <entry key="Android Vitals">
+        <entry key="Android vitals">
           <value>
             <InsightsFilterSettings>
               <option name="connection">
@@ -22,10 +22,10 @@
             <InsightsFilterSettings>
               <option name="connection">
                 <ConnectionSetting>
-                  <option name="appId" value="PLACEHOLDER" />
-                  <option name="mobileSdkAppId" value="" />
-                  <option name="projectId" value="" />
-                  <option name="projectNumber" value="" />
+                  <option name="appId" value="com.sense.sky" />
+                  <option name="mobileSdkAppId" value="1:870264865700:android:533bb7052d121511cfb731" />
+                  <option name="projectId" value="projects-2000" />
+                  <option name="projectNumber" value="870264865700" />
                 </ConnectionSetting>
               </option>
               <option name="signal" value="SIGNAL_UNSPECIFIED" />

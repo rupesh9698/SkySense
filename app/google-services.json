@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "870264865700",
+    "firebase_url": "https://projects-2000-default-rtdb.asia-southeast1.firebasedatabase.app",
+    "project_id": "projects-2000",
+    "storage_bucket": "projects-2000.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:870264865700:android:533bb7052d121511cfb731",
+        "android_client_info": {
+          "package_name": "com.sense.sky"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "870264865700-c0qoclr0ofkgca217m1f9v1u2sba40k6.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.sense.sky",
+            "certificate_hash": "54edbd72237d7f737be3a782fea7d1f316ab1e15"
+          }
+        },
+        {
+          "client_id": "870264865700-7jnkaedfekk4nljoev89oalo51s6cvqa.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAVkciEao8jMuUVeIXM3pKihSlx1WKRAtg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "870264865700-7jnkaedfekk4nljoev89oalo51s6cvqa.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "870264865700-i47jp62fbs0fvsn3lbpq2ub7jbhuo0q6.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.demo.login.FirebaseLogin"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

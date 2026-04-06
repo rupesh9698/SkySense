@@ -37,50 +37,51 @@ public class DaysAdapter extends RecyclerView.Adapter<DaysAdapter.ViewHolder> {
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-
         DaysModel model = daysModelArrayList.get(position);
 
-        SimpleDateFormat input = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
-        SimpleDateFormat output = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault());
-
+        // Improved date format: "Mon, Apr 07"
+        SimpleDateFormat input  = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+        SimpleDateFormat output = new SimpleDateFormat("EEE, MMM dd", Locale.getDefault());
         try {
             Date t = input.parse(model.getDate());
-            if (t != null) {
-                holder.idACTVDay.setText(output.format(t));
-            }
-        } catch (ParseException ignored) {
-        }
+            if (t != null) holder.idACTVDay.setText(output.format(t));
+        } catch (ParseException ignored) {}
 
         if (model.getCurrentTemperatureUnit().equals("fahrenheit")) {
-            holder.idACTVTemperature.setText(String.format("%s–%s °F", model.getMinFahrenheit(), model.getMaxFahrenheit()));
-        }
-        else {
-            holder.idACTVTemperature.setText(String.format("%s–%s °C", model.getMin_temperature(), model.getMax_temperature()));
+            holder.idACTVTemperature.setText(
+                    String.format(Locale.getDefault(), "%.0f–%.0f °F",
+                            parseDouble(model.getMinFahrenheit()),
+                            parseDouble(model.getMaxFahrenheit())));
+        } else {
+            holder.idACTVTemperature.setText(
+                    String.format(Locale.getDefault(), "%.0f–%.0f °C",
+                            parseDouble(model.getMin_temperature()),
+                            parseDouble(model.getMax_temperature())));
         }
 
         Picasso.get().load("https:".concat(model.getIcon())).into(holder.idACIVCondition);
-        holder.idACTVHumidity.setText(String.format("Humidity: %s%%", model.getHumidity()));
-        holder.idACTVWindSpeed.setText(String.format("WS: %s km/h", model.getWindSpeed()));
+        holder.idACTVHumidity.setText(String.format(Locale.getDefault(), "Humidity: %s%%", model.getHumidity()));
+        holder.idACTVWindSpeed.setText(String.format(Locale.getDefault(), "WS: %s km/h", model.getWindSpeed()));
+    }
+
+    private double parseDouble(String s) {
+        try { return Double.parseDouble(s); } catch (NumberFormatException e) { return 0; }
     }
 
     @Override
-    public int getItemCount() {
-        return daysModelArrayList.size();
-    }
+    public int getItemCount() { return daysModelArrayList.size(); }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
-
         private final AppCompatTextView idACTVDay, idACTVTemperature, idACTVHumidity, idACTVWindSpeed;
         private final AppCompatImageView idACIVCondition;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
-
-            idACTVDay = itemView.findViewById(R.id.idACTVDay);
+            idACTVDay         = itemView.findViewById(R.id.idACTVDay);
             idACTVTemperature = itemView.findViewById(R.id.idACTVTemperature);
-            idACTVHumidity = itemView.findViewById(R.id.idACTVHumidity);
-            idACTVWindSpeed = itemView.findViewById(R.id.idACTVWindSpeed);
-            idACIVCondition = itemView.findViewById(R.id.idACIVCondition);
+            idACTVHumidity    = itemView.findViewById(R.id.idACTVHumidity);
+            idACTVWindSpeed   = itemView.findViewById(R.id.idACTVWindSpeed);
+            idACIVCondition   = itemView.findViewById(R.id.idACIVCondition);
         }
     }
 }

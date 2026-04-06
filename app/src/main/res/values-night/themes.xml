@@ -1,10 +1,19 @@
-<resources xmlns:tools="http://schemas.android.com/tools">
-    <!-- Base application theme. -->
-    <style name="Base.Theme.SkySense" parent="Theme.Material3.DayNight">
-        <!-- Customize your dark theme here. -->
-        <!-- <item name="colorPrimary">@color/my_dark_primary</item> -->
-        <item name="colorPrimary">#00B0FF</item>
-        <item name="colorPrimaryDark">#0036FF</item>
-        <item name="colorAccent">#E91E63</item>
+<resources>
+    <style name="Base.Theme.SkySense" parent="Theme.Material3.DayNight.NoActionBar">
+        <!-- Night: brighter sky-blue on dark surface -->
+        <item name="colorPrimary">#59C3F4</item>
+        <item name="colorOnPrimary">#003549</item>
+        <item name="colorPrimaryContainer">#004D68</item>
+        <item name="colorOnPrimaryContainer">#BAE8FF</item>
+        <item name="colorSecondary">#4DD0E1</item>
+        <item name="colorOnSecondary">#00363D</item>
+        <item name="colorSecondaryContainer">#004F58</item>
+        <item name="colorOnSecondaryContainer">#9EEFFA</item>
+        <item name="colorSurface">#152535</item>
+        <item name="colorSurfaceVariant">#1A2F3E</item>
+        <item name="colorOnSurfaceVariant">#90CAE1</item>
+        <item name="android:colorBackground">@color/background_night</item>
+        <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="android:windowLightStatusBar">false</item>
     </style>
 </resources>

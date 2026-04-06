@@ -1,11 +1,23 @@
-<resources xmlns:tools="http://schemas.android.com/tools">
-    <!-- Base application theme. -->
-    <style name="Base.Theme.SkySense" parent="Theme.Material3.DayNight">
-        <!-- Customize your light theme here. -->
-        <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
-        <item name="colorPrimary">#00B0FF</item>
-        <item name="colorPrimaryDark">#0036FF</item>
-        <item name="colorAccent">#E91E63</item>
+<resources>
+    <style name="Base.Theme.SkySense" parent="Theme.Material3.DayNight.NoActionBar">
+        <!-- Primary sky-blue palette -->
+        <item name="colorPrimary">#0288D1</item>
+        <item name="colorOnPrimary">#FFFFFF</item>
+        <item name="colorPrimaryContainer">#BAE8FF</item>
+        <item name="colorOnPrimaryContainer">#001E30</item>
+        <!-- Secondary teal -->
+        <item name="colorSecondary">#00ACC1</item>
+        <item name="colorOnSecondary">#FFFFFF</item>
+        <item name="colorSecondaryContainer">#C9F2FF</item>
+        <item name="colorOnSecondaryContainer">#001F25</item>
+        <!-- Surface / background -->
+        <item name="colorSurface">#FFFFFF</item>
+        <item name="colorSurfaceVariant">#DCF0FA</item>
+        <item name="colorOnSurfaceVariant">#42616D</item>
+        <item name="android:colorBackground">@color/background</item>
+        <!-- Status bar colour handled by edge-to-edge; keep transparent -->
+        <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="android:windowLightStatusBar">true</item>
     </style>
 
     <style name="Theme.SkySense" parent="Base.Theme.SkySense" />
