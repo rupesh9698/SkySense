@@ -1,18 +1,27 @@
 <resources>
     <style name="Base.Theme.SkySense" parent="Theme.Material3.DayNight.NoActionBar">
-        <!-- Night: brighter sky-blue on dark surface -->
+        <!-- Primary sky-blue palette -->
         <item name="colorPrimary">#59C3F4</item>
         <item name="colorOnPrimary">#003549</item>
         <item name="colorPrimaryContainer">#004D68</item>
         <item name="colorOnPrimaryContainer">#BAE8FF</item>
+
+        <!-- Secondary teal -->
         <item name="colorSecondary">#4DD0E1</item>
         <item name="colorOnSecondary">#00363D</item>
         <item name="colorSecondaryContainer">#004F58</item>
         <item name="colorOnSecondaryContainer">#9EEFFA</item>
-        <item name="colorSurface">#152535</item>
-        <item name="colorSurfaceVariant">#1A2F3E</item>
+
+        <!-- Surface / background -->
+        <item name="colorBackground">@color/black</item>
         <item name="colorOnSurfaceVariant">#90CAE1</item>
         <item name="android:colorBackground">@color/background_night</item>
+
+        <!-- Custom Styling -->
+        <item name="colorText">@color/white</item>
+        <item name="colorInsideBackground">@color/off_black</item>
+
+        <!-- Status bar colour handled by edge-to-edge; keep transparent -->
         <item name="android:statusBarColor">@android:color/transparent</item>
         <item name="android:windowLightStatusBar">false</item>
     </style>

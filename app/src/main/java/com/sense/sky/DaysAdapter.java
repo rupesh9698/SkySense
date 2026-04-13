@@ -39,29 +39,28 @@ public class DaysAdapter extends RecyclerView.Adapter<DaysAdapter.ViewHolder> {
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         DaysModel model = daysModelArrayList.get(position);
 
-        // Improved date format: "Mon, Apr 07"
         SimpleDateFormat input  = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
         SimpleDateFormat output = new SimpleDateFormat("EEE, MMM dd", Locale.getDefault());
         try {
-            Date t = input.parse(model.getDate());
+            Date t = input.parse(model.date());
             if (t != null) holder.idACTVDay.setText(output.format(t));
         } catch (ParseException ignored) {}
 
-        if (model.getCurrentTemperatureUnit().equals("fahrenheit")) {
+        if (model.currentTemperatureUnit().equals("fahrenheit")) {
             holder.idACTVTemperature.setText(
                     String.format(Locale.getDefault(), "%.0f–%.0f °F",
-                            parseDouble(model.getMinFahrenheit()),
-                            parseDouble(model.getMaxFahrenheit())));
+                            parseDouble(model.minFahrenheit()),
+                            parseDouble(model.maxFahrenheit())));
         } else {
             holder.idACTVTemperature.setText(
                     String.format(Locale.getDefault(), "%.0f–%.0f °C",
-                            parseDouble(model.getMin_temperature()),
-                            parseDouble(model.getMax_temperature())));
+                            parseDouble(model.min_temperature()),
+                            parseDouble(model.max_temperature())));
         }
 
-        Picasso.get().load("https:".concat(model.getIcon())).into(holder.idACIVCondition);
-        holder.idACTVHumidity.setText(String.format(Locale.getDefault(), "Humidity: %s%%", model.getHumidity()));
-        holder.idACTVWindSpeed.setText(String.format(Locale.getDefault(), "WS: %s km/h", model.getWindSpeed()));
+        Picasso.get().load("https:".concat(model.icon())).into(holder.idACIVCondition);
+        holder.idACTVHumidity.setText(String.format(Locale.getDefault(), "Humidity: %s%%", model.humidity()));
+        holder.idACTVWindSpeed.setText(String.format(Locale.getDefault(), "WS: %s km/h", model.windSpeed()));
     }
 
     private double parseDouble(String s) {

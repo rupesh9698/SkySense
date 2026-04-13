@@ -51,9 +51,4 @@ public class WeatherApiClient {
         }
         return instance;
     }
-
-    /** Clears the cached instance (useful for tests or re-initialisation). */
-    public static void reset() {
-        instance = null;
-    }
 }

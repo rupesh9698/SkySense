@@ -17,4 +17,11 @@
     <string name="select_favourite">Select Favourite</string>
     <string name="current_temperature_unit">currentTemperatureUnit</string>
     <string name="add_to_favourite">AddToFavourite</string>
+    <string name="search_for_a_city_or_place">Search for a city or place…</string>
+    <string name="pressure">PRESSURE</string>
+    <string name="wind">WIND</string>
+    <string name="humidity">HUMIDITY</string>
+    <string name="uv_index">UV INDEX</string>
+    <string name="feels_like">FEELS LIKE</string>
+    <string name="visibility">VISIBILITY</string>
 </resources>

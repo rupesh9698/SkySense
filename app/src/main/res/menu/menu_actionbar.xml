@@ -6,14 +6,16 @@
 
     <item
         android:id="@+id/addToFavourite"
-        android:icon="@drawable/star"
+        android:icon="@drawable/star_stroke"
         app:showAsAction="always"
+        app:iconTint="?attr/colorOnPrimary"
         android:title="@string/add_to_favourite" />
 
     <item
         android:id="@+id/temperature_change"
         android:icon="@drawable/fahrenheit"
         app:showAsAction="always"
+        app:iconTint="?attr/colorOnPrimary"
         android:title="@string/current_temperature_unit" />
 
 </menu>

@@ -1,0 +1,504 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:paddingHorizontal="20dp"
+    android:paddingTop="16dp"
+    android:paddingBottom="32dp">
+
+    <!-- Search bar placeholder -->
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:layout_marginBottom="8dp"
+        android:background="@drawable/bg_shimmer_item"
+        android:backgroundTint="?attr/colorSurfaceVariant" />
+
+    <!-- Favourites dropdown placeholder -->
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="52dp"
+        android:layout_marginBottom="12dp"
+        android:background="@drawable/bg_shimmer_item"
+        android:backgroundTint="?attr/colorSurfaceVariant" />
+
+    <!-- Hero card placeholder -->
+    <com.google.android.material.card.MaterialCardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="12dp"
+        app:cardCornerRadius="25dp"
+        app:cardElevation="2.5dp"
+        app:strokeWidth="0dp">
+
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="?attr/colorSurface"
+            android:gravity="center_horizontal"
+            android:orientation="vertical"
+            android:padding="20dp">
+
+            <!-- City name -->
+            <View
+                android:layout_width="160dp"
+                android:layout_height="22dp"
+                android:background="@drawable/bg_shimmer_item"
+                android:backgroundTint="?attr/colorSurfaceVariant" />
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="10dp" />
+
+            <!-- Updated at label -->
+            <View
+                android:layout_width="80dp"
+                android:layout_height="12dp"
+                android:background="@drawable/bg_shimmer_item"
+                android:backgroundTint="?attr/colorSurfaceVariant" />
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="6dp" />
+
+            <!-- Updated at value -->
+            <View
+                android:layout_width="120dp"
+                android:layout_height="14dp"
+                android:background="@drawable/bg_shimmer_item"
+                android:backgroundTint="?attr/colorSurfaceVariant" />
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="14dp" />
+
+            <!-- Big temperature -->
+            <View
+                android:layout_width="130dp"
+                android:layout_height="60dp"
+                android:background="@drawable/bg_shimmer_item"
+                android:backgroundTint="?attr/colorSurfaceVariant" />
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="12dp" />
+
+            <!-- Weather icon circle -->
+            <View
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:background="@drawable/bg_shimmer_circle"
+                android:backgroundTint="?attr/colorSurfaceVariant" />
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="12dp" />
+
+            <!-- Condition text -->
+            <View
+                android:layout_width="140dp"
+                android:layout_height="20dp"
+                android:background="@drawable/bg_shimmer_item"
+                android:backgroundTint="?attr/colorSurfaceVariant" />
+
+        </androidx.appcompat.widget.LinearLayoutCompat>
+
+    </com.google.android.material.card.MaterialCardView>
+
+    <!-- Stats card placeholder -->
+    <com.google.android.material.card.MaterialCardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="12dp"
+        app:cardCornerRadius="25dp"
+        app:cardElevation="2.5dp"
+        app:strokeWidth="0dp">
+
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="?attr/colorSurface"
+            android:orientation="vertical"
+            android:padding="12dp">
+
+            <!-- Row 1 -->
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:weightSum="3">
+
+                <androidx.appcompat.widget.LinearLayoutCompat
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:orientation="vertical"
+                    android:padding="8dp">
+
+                    <View
+                        android:layout_width="36dp"
+                        android:layout_height="36dp"
+                        android:background="@drawable/bg_shimmer_circle"
+                        android:backgroundTint="?attr/colorSurfaceVariant" />
+
+                    <View
+                        android:layout_width="0dp"
+                        android:layout_height="6dp" />
+
+                    <View
+                        android:layout_width="52dp"
+                        android:layout_height="11dp"
+                        android:background="@drawable/bg_shimmer_item"
+                        android:backgroundTint="?attr/colorSurfaceVariant" />
+
+                    <View
+                        android:layout_width="0dp"
+                        android:layout_height="4dp" />
+
+                    <View
+                        android:layout_width="44dp"
+                        android:layout_height="14dp"
+                        android:background="@drawable/bg_shimmer_item"
+                        android:backgroundTint="?attr/colorSurfaceVariant" />
+
+                </androidx.appcompat.widget.LinearLayoutCompat>
+
+                <androidx.appcompat.widget.LinearLayoutCompat
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:orientation="vertical"
+                    android:padding="8dp">
+
+                    <View
+                        android:layout_width="36dp"
+                        android:layout_height="36dp"
+                        android:background="@drawable/bg_shimmer_circle"
+                        android:backgroundTint="?attr/colorSurfaceVariant" />
+
+                    <View
+                        android:layout_width="0dp"
+                        android:layout_height="6dp" />
+
+                    <View
+                        android:layout_width="36dp"
+                        android:layout_height="11dp"
+                        android:background="@drawable/bg_shimmer_item"
+                        android:backgroundTint="?attr/colorSurfaceVariant" />
+
+                    <View
+                        android:layout_width="0dp"
+                        android:layout_height="4dp" />
+
+                    <View
+                        android:layout_width="56dp"
+                        android:layout_height="14dp"
+                        android:background="@drawable/bg_shimmer_item"
+                        android:backgroundTint="?attr/colorSurfaceVariant" />
+
+                </androidx.appcompat.widget.LinearLayoutCompat>
+
+                <androidx.appcompat.widget.LinearLayoutCompat
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:orientation="vertical"
+                    android:padding="8dp">
+
+                    <View
+                        android:layout_width="36dp"
+                        android:layout_height="36dp"
+                        android:background="@drawable/bg_shimmer_circle"
+                        android:backgroundTint="?attr/colorSurfaceVariant" />
+
+                    <View
+                        android:layout_width="0dp"
+                        android:layout_height="6dp" />
+
+                    <View
+                        android:layout_width="52dp"
+                        android:layout_height="11dp"
+                        android:background="@drawable/bg_shimmer_item"
+                        android:backgroundTint="?attr/colorSurfaceVariant" />
+
+                    <View
+                        android:layout_width="0dp"
+                        android:layout_height="4dp" />
+
+                    <View
+                        android:layout_width="32dp"
+                        android:layout_height="14dp"
+                        android:background="@drawable/bg_shimmer_item"
+                        android:backgroundTint="?attr/colorSurfaceVariant" />
+
+                </androidx.appcompat.widget.LinearLayoutCompat>
+
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginHorizontal="8dp"
+                android:background="?attr/colorOutlineVariant" />
+
+            <!-- Row 2 (identical structure) -->
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:weightSum="3">
+
+                <androidx.appcompat.widget.LinearLayoutCompat
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:orientation="vertical"
+                    android:padding="8dp">
+
+                    <View
+                        android:layout_width="36dp"
+                        android:layout_height="36dp"
+                        android:background="@drawable/bg_shimmer_circle"
+                        android:backgroundTint="?attr/colorSurfaceVariant" />
+
+                    <View
+                        android:layout_width="0dp"
+                        android:layout_height="6dp" />
+
+                    <View
+                        android:layout_width="52dp"
+                        android:layout_height="11dp"
+                        android:background="@drawable/bg_shimmer_item"
+                        android:backgroundTint="?attr/colorSurfaceVariant" />
+
+                    <View
+                        android:layout_width="0dp"
+                        android:layout_height="4dp" />
+
+                    <View
+                        android:layout_width="28dp"
+                        android:layout_height="14dp"
+                        android:background="@drawable/bg_shimmer_item"
+                        android:backgroundTint="?attr/colorSurfaceVariant" />
+
+                </androidx.appcompat.widget.LinearLayoutCompat>
+
+                <androidx.appcompat.widget.LinearLayoutCompat
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:orientation="vertical"
+                    android:padding="8dp">
+
+                    <View
+                        android:layout_width="36dp"
+                        android:layout_height="36dp"
+                        android:background="@drawable/bg_shimmer_circle"
+                        android:backgroundTint="?attr/colorSurfaceVariant" />
+
+                    <View
+                        android:layout_width="0dp"
+                        android:layout_height="6dp" />
+
+                    <View
+                        android:layout_width="52dp"
+                        android:layout_height="11dp"
+                        android:background="@drawable/bg_shimmer_item"
+                        android:backgroundTint="?attr/colorSurfaceVariant" />
+
+                    <View
+                        android:layout_width="0dp"
+                        android:layout_height="4dp" />
+
+                    <View
+                        android:layout_width="48dp"
+                        android:layout_height="14dp"
+                        android:background="@drawable/bg_shimmer_item"
+                        android:backgroundTint="?attr/colorSurfaceVariant" />
+
+                </androidx.appcompat.widget.LinearLayoutCompat>
+
+                <androidx.appcompat.widget.LinearLayoutCompat
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:orientation="vertical"
+                    android:padding="8dp">
+
+                    <View
+                        android:layout_width="36dp"
+                        android:layout_height="36dp"
+                        android:background="@drawable/bg_shimmer_circle"
+                        android:backgroundTint="?attr/colorSurfaceVariant" />
+
+                    <View
+                        android:layout_width="0dp"
+                        android:layout_height="6dp" />
+
+                    <View
+                        android:layout_width="52dp"
+                        android:layout_height="11dp"
+                        android:background="@drawable/bg_shimmer_item"
+                        android:backgroundTint="?attr/colorSurfaceVariant" />
+
+                    <View
+                        android:layout_width="0dp"
+                        android:layout_height="4dp" />
+
+                    <View
+                        android:layout_width="40dp"
+                        android:layout_height="14dp"
+                        android:background="@drawable/bg_shimmer_item"
+                        android:backgroundTint="?attr/colorSurfaceVariant" />
+
+                </androidx.appcompat.widget.LinearLayoutCompat>
+
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+        </androidx.appcompat.widget.LinearLayoutCompat>
+
+    </com.google.android.material.card.MaterialCardView>
+
+    <!-- Hourly section label placeholder -->
+    <View
+        android:layout_width="180dp"
+        android:layout_height="16dp"
+        android:layout_marginBottom="10dp"
+        android:background="@drawable/bg_shimmer_item"
+        android:backgroundTint="?attr/colorSurfaceVariant" />
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <!-- Hourly cards row placeholder -->
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="15dp"
+            android:orientation="horizontal">
+
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="110dp"
+                android:layout_height="150dp"
+                android:layout_marginEnd="8dp"
+                app:cardCornerRadius="16dp"
+                app:cardElevation="2dp"
+                app:strokeWidth="0dp">
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="?attr/colorSurfaceVariant" />
+
+            </com.google.android.material.card.MaterialCardView>
+
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="110dp"
+                android:layout_height="150dp"
+                android:layout_marginEnd="8dp"
+                app:cardCornerRadius="16dp"
+                app:cardElevation="2dp"
+                app:strokeWidth="0dp">
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="?attr/colorSurfaceVariant" />
+
+            </com.google.android.material.card.MaterialCardView>
+
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="110dp"
+                android:layout_height="150dp"
+                android:layout_marginEnd="8dp"
+                app:cardCornerRadius="16dp"
+                app:cardElevation="2dp"
+                app:strokeWidth="0dp">
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="?attr/colorSurfaceVariant" />
+
+            </com.google.android.material.card.MaterialCardView>
+
+        </androidx.appcompat.widget.LinearLayoutCompat>
+
+    </androidx.core.widget.NestedScrollView>
+
+    <!-- Weekly section label placeholder -->
+    <View
+        android:layout_width="200dp"
+        android:layout_height="16dp"
+        android:layout_marginBottom="10dp"
+        android:background="@drawable/bg_shimmer_item"
+        android:backgroundTint="?attr/colorSurfaceVariant" />
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <!-- Weekly cards row placeholder -->
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="130dp"
+                android:layout_height="150dp"
+                android:layout_marginEnd="8dp"
+                app:cardCornerRadius="16dp"
+                app:cardElevation="2dp"
+                app:strokeWidth="0dp">
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="?attr/colorSurfaceVariant" />
+
+            </com.google.android.material.card.MaterialCardView>
+
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="130dp"
+                android:layout_height="150dp"
+                android:layout_marginEnd="8dp"
+                app:cardCornerRadius="16dp"
+                app:cardElevation="2dp"
+                app:strokeWidth="0dp">
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="?attr/colorSurfaceVariant" />
+
+            </com.google.android.material.card.MaterialCardView>
+
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="130dp"
+                android:layout_height="150dp"
+                app:cardCornerRadius="16dp"
+                app:cardElevation="2dp"
+                app:strokeWidth="0dp">
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="?attr/colorSurfaceVariant" />
+
+            </com.google.android.material.card.MaterialCardView>
+
+        </androidx.appcompat.widget.LinearLayoutCompat>
+
+    </androidx.core.widget.NestedScrollView>
+
+</androidx.appcompat.widget.LinearLayoutCompat>

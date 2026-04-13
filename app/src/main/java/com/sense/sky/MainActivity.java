@@ -29,7 +29,6 @@ import com.google.android.gms.location.Priority;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.libraries.places.api.Places;
 import com.google.android.libraries.places.api.model.AutocompletePrediction;
-import com.google.android.libraries.places.api.model.AutocompleteSessionToken;
 import com.google.android.libraries.places.api.model.Place;
 import com.google.android.libraries.places.api.net.FetchPlaceRequest;
 import com.google.android.libraries.places.api.net.PlacesClient;
@@ -45,6 +44,7 @@ import com.squareup.picasso.Picasso;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
@@ -86,7 +86,6 @@ public class MainActivity extends AppCompatActivity {
 
     // ── Places ────────────────────────────────────────────────────────────────
     private PlacesClient placesClient;
-    private AutocompleteSessionToken autocompleteSessionToken;
     private ActivityResultLauncher<Intent> placeAutocompleteLauncher;
 
     // ── Retrofit ──────────────────────────────────────────────────────────────
@@ -97,13 +96,13 @@ public class MainActivity extends AppCompatActivity {
     //  Lifecycle
     // ─────────────────────────────────────────────────────────────────────────
 
-    public static boolean hasInternet(Context context) {
+    public static boolean isOffline(Context context) {
         ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
-        if (cm == null) return false;
+        if (cm == null) return true;
         Network active = cm.getActiveNetwork();
-        if (active == null) return false;
+        if (active == null) return true;
         NetworkCapabilities caps = cm.getNetworkCapabilities(active);
-        return caps != null && caps.hasCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET);
+        return caps == null || !caps.hasCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET);
     }
 
     @Override
@@ -127,16 +126,15 @@ public class MainActivity extends AppCompatActivity {
         binding.idRVWeatherDays.setAdapter(daysAdapter);
 
         // SwipeRefreshLayout
-        binding.swipeRefresh.setOnRefreshListener(() -> {
+        binding.swipeRefresh.setOnRefreshListener(refreshLayout -> {
             if (lastLat != null && lastLon != null) {
                 fetchFromNetwork(lastLat, lastLon, lastDisplayName);
             } else {
-                binding.swipeRefresh.setRefreshing(false);
+                refreshLayout.finishRefresh(false);
             }
         });
 
-        // Internet check
-        if (!hasInternet(this)) {
+        if (isOffline(this)) {
             showNoInternetDialog();
         }
 
@@ -151,14 +149,17 @@ public class MainActivity extends AppCompatActivity {
             Places.initializeWithNewPlacesApiEnabled(getApplicationContext(), MAPS_API_KEY);
         }
         placesClient = Places.createClient(this);
-        autocompleteSessionToken = AutocompleteSessionToken.newInstance();
 
         placeAutocompleteLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
             Intent data = result.getData();
             if (result.getResultCode() == PlaceAutocompleteActivity.RESULT_OK && data != null) {
                 AutocompletePrediction prediction = PlaceAutocomplete.getPredictionFromIntent(data);
-                AutocompleteSessionToken token = PlaceAutocomplete.getSessionTokenFromIntent(data);
-                if (token != null) autocompleteSessionToken = token;
+                if (prediction == null) {
+                    toast("Could not resolve selected place.");
+                    return;
+                } else {
+                    prediction.getPlaceId();
+                }
                 fetchPlaceAndLoadWeather(prediction.getPlaceId());
             }
         });
@@ -171,8 +172,8 @@ public class MainActivity extends AppCompatActivity {
 
         binding.idACACTVDropdown.setOnItemClickListener((parent, view, position, id) -> {
             String name = favouriteNames[position];
-            SharedPreferences coords = getSharedPreferences("Fav_Locations", MODE_PRIVATE);
-            String saved = coords.getString("coords_" + name, null);
+            SharedPreferences coordinates = getSharedPreferences("Fav_Locations", MODE_PRIVATE);
+            String saved = coordinates.getString("saved_coordinates" + name, null);
             if (saved != null) {
                 String[] parts = saved.split(",");
                 if (parts.length == 2) {
@@ -311,8 +312,7 @@ public class MainActivity extends AppCompatActivity {
         long ts = cache.getWeatherDataTimestamp(cacheKey);
         boolean fresh = (System.currentTimeMillis() - ts) <= CACHE_TTL_MILLIS;
 
-        // Offline or fresh cache → render immediately
-        if (!hasInternet(this) && cached != null) {
+        if (isOffline(this) && cached != null) {
             parseAndDisplayJson(cached);
             return;
         }
@@ -336,10 +336,10 @@ public class MainActivity extends AppCompatActivity {
 
         activeCall = weatherApiService.getForecast(WEATHER_API_KEY, lat + "," + lon, 7, "no", "no");
 
-        activeCall.enqueue(new Callback<WeatherResponse>() {
+        activeCall.enqueue(new Callback<>() {
             @Override
             public void onResponse(@NonNull Call<WeatherResponse> call, @NonNull Response<WeatherResponse> response) {
-                binding.swipeRefresh.setRefreshing(false);
+                binding.swipeRefresh.finishRefresh(true);
                 if (response.isSuccessful() && response.body() != null) {
                     WeatherResponse wr = response.body();
 
@@ -365,7 +365,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onFailure(@NonNull Call<WeatherResponse> call, @NonNull Throwable t) {
                 if (call.isCanceled()) return;
-                binding.swipeRefresh.setRefreshing(false);
+                binding.swipeRefresh.finishRefresh(false);
                 handleNetworkError(cached, "Network error.");
             }
         });
@@ -386,7 +386,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     /**
-     * Deserialise cached JSON and re-bind.
+     * De-serialize cached JSON and re-bind.
      */
     private void parseAndDisplayJson(String json) {
         try {
@@ -438,6 +438,7 @@ public class MainActivity extends AppCompatActivity {
             }
         }
         daysAdapter.notifyDataSetChanged();
+        invalidateOptionsMenu();
     }
 
     // ─────────────────────────────────────────────────────────────────────────
@@ -488,6 +489,25 @@ public class MainActivity extends AppCompatActivity {
         return true;
     }
 
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        MenuItem starItem = menu.findItem(R.id.addToFavourite);
+        if (starItem != null) {
+            starItem.setIcon(isFavouritePresent(lastDisplayName)
+                    ? R.drawable.star_filled
+                    : R.drawable.star_stroke);
+        }
+
+        MenuItem tempItem = menu.findItem(R.id.temperature_change);
+        if (tempItem != null) {
+            tempItem.setIcon(currentTemperatureUnit.equals("celsius")
+                    ? R.drawable.fahrenheit   // shows what you'll switch TO
+                    : R.drawable.celsius);
+        }
+
+        return super.onPrepareOptionsMenu(menu);
+    }
+
     // ─────────────────────────────────────────────────────────────────────────
     //  Favourites
     // ─────────────────────────────────────────────────────────────────────────
@@ -499,21 +519,32 @@ public class MainActivity extends AppCompatActivity {
         if (id == R.id.temperature_change) {
             if (currentTemperatureUnit.equals("celsius")) {
                 currentTemperatureUnit = "fahrenheit";
-                item.setIcon(R.drawable.celsius);
             } else {
                 currentTemperatureUnit = "celsius";
-                item.setIcon(R.drawable.fahrenheit);
             }
             if (lastResponseJson != null) {
                 parseAndDisplayJson(lastResponseJson);
             } else if (lastLat != null && lastLon != null) {
                 getWeatherInfo(lastLat, lastLon, lastDisplayName);
             }
-            toast("Switched to " + currentTemperatureUnit);
+            toast("Switched to " + (currentTemperatureUnit.equals("celsius") ? "℃" : "°F"));
         }
 
         if (id == R.id.addToFavourite) {
-            addCurrentToFavourites();
+            if (lastDisplayName == null || lastDisplayName.isEmpty()
+                    || lastLat == null || lastLon == null) {
+                Toast.makeText(this, "Nothing to add to favourites.", Toast.LENGTH_SHORT).show();
+                return super.onOptionsItemSelected(item);
+            }
+            if (isFavouritePresent(lastDisplayName)) {
+                removeCurrentFromFavourites();
+                item.setIcon(R.drawable.star_stroke);
+                Toast.makeText(this, "Removed from favourites.", Toast.LENGTH_SHORT).show();
+            } else {
+                addCurrentToFavourites();
+                item.setIcon(R.drawable.star_filled);
+                Toast.makeText(this, "Added to favourites.", Toast.LENGTH_SHORT).show();
+            }
         }
 
         return super.onOptionsItemSelected(item);
@@ -554,11 +585,33 @@ public class MainActivity extends AppCompatActivity {
             editor.putString("item_" + i, favouriteNames[i]);
         editor.apply();
 
-        getSharedPreferences("Fav_Locations", MODE_PRIVATE).edit().putString("coords_" + lastDisplayName, String.format(Locale.US, "%.6f,%.6f", lastLat, lastLon)).apply();
+        getSharedPreferences("Fav_Locations", MODE_PRIVATE).edit().putString("saved_coordinates" + lastDisplayName, String.format(Locale.US, "%.6f,%.6f", lastLat, lastLon)).apply();
 
         adapterItems = new ArrayAdapter<>(this, R.layout.list_items, favouriteNames);
         binding.idACACTVDropdown.setAdapter(adapterItems);
         toast("Added to favourites.");
+    }
+
+    private void removeCurrentFromFavourites() {
+        List<String> list = new ArrayList<>(Arrays.asList(favouriteNames));
+        list.remove(lastDisplayName);
+        favouriteNames = list.toArray(new String[0]);
+
+        SharedPreferences namesPrefs = getSharedPreferences("Select Favourite", MODE_PRIVATE);
+        SharedPreferences.Editor editor = namesPrefs.edit();
+        editor.putInt("itemCount", favouriteNames.length);
+        for (int i = 0; i < favouriteNames.length; i++) {
+            editor.putString("item_" + i, favouriteNames[i]);
+        }
+        editor.apply();
+
+        getSharedPreferences("Fav_Locations", MODE_PRIVATE)
+                .edit()
+                .remove("saved_coordinates" + lastDisplayName)
+                .apply();
+
+        adapterItems = new ArrayAdapter<>(this, R.layout.list_items, favouriteNames);
+        binding.idACACTVDropdown.setAdapter(adapterItems);
     }
 
     // ─────────────────────────────────────────────────────────────────────────
@@ -573,10 +626,12 @@ public class MainActivity extends AppCompatActivity {
     private void showLoading(boolean loading) {
         if (binding == null) return;
         if (loading) {
-            binding.idProgressBar.setVisibility(android.view.View.VISIBLE);
+            binding.shimmerViewContainer.setVisibility(android.view.View.VISIBLE);
+            binding.shimmerViewContainer.startShimmer();
             binding.swipeRefresh.setVisibility(android.view.View.GONE);
         } else {
-            binding.idProgressBar.setVisibility(android.view.View.GONE);
+            binding.shimmerViewContainer.stopShimmer();
+            binding.shimmerViewContainer.setVisibility(android.view.View.GONE);
             binding.swipeRefresh.setVisibility(android.view.View.VISIBLE);
         }
     }

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- Surface / background -->
+    <attr name="colorBackground" format="color" />
+
+    <!-- Custom Styling -->
+    <attr name="colorText" format="color" />
+    <attr name="colorInsideBackground" format="color" />
+</resources>

@@ -1,17 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!--
-  CoordinatorLayout with fitsSystemWindows="true" at root + AppBarLayout with
-  fitsSystemWindows="true" is the correct fix for Android 15/16 edge-to-edge
-  enforcement. The AppBarLayout absorbs the status-bar inset as padding, so
-  content always begins below the app bar, not behind the status bar.
--->
-<androidx.coordinatorlayout.widget.CoordinatorLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="?attr/colorSurfaceVariant"
+    android:background="?attr/colorBackground"
     android:fitsSystemWindows="true"
     tools:context=".MainActivity">
 
@@ -26,7 +19,7 @@
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
-            android:background="?attr/colorPrimary"
+            android:background="@color/colorPrimary"
             app:title="@string/app_name"
             app:titleTextColor="?attr/colorOnPrimary" />
 
@@ -38,21 +31,45 @@
         android:layout_height="match_parent"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-        <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        <com.facebook.shimmer.ShimmerFrameLayout
+            android:id="@+id/shimmer_view_container"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="visible">
+
+            <androidx.core.widget.NestedScrollView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <include layout="@layout/layout_shimmer_placeholder" />
+
+            </androidx.core.widget.NestedScrollView>
+
+        </com.facebook.shimmer.ShimmerFrameLayout>
+
+        <com.scwang.smart.refresh.layout.SmartRefreshLayout
             android:id="@+id/swipeRefresh"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:visibility="gone">
+            android:visibility="gone"
+            app:srlEnableLoadMore="false"
+            app:srlEnableOverScrollBounce="true"
+            app:srlEnableOverScrollDrag="false">
+
+            <com.sense.sky.widget.BezierCircleHeader
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
 
             <androidx.core.widget.NestedScrollView
                 android:id="@+id/idNSVHome"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
-                <LinearLayout
+                <androidx.appcompat.widget.LinearLayoutCompat
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
+                    android:paddingHorizontal="20dp"
                     android:paddingBottom="32dp">
 
                     <!-- Search card -->
@@ -60,40 +77,37 @@
                         android:id="@+id/cardSearch"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="16dp"
-                        android:layout_marginEnd="16dp"
                         android:layout_marginTop="16dp"
                         android:layout_marginBottom="8dp"
-                        app:cardCornerRadius="28dp"
-                        app:cardElevation="3dp"
+                        app:cardCornerRadius="25dp"
+                        app:cardElevation="2.5dp"
                         app:strokeWidth="0dp">
 
                         <FrameLayout
                             android:id="@+id/autocomplete_fragment"
                             android:layout_width="match_parent"
                             android:layout_height="56dp"
+                            android:background="@drawable/bg_background"
                             android:clickable="true"
                             android:focusable="true"
-                            android:foreground="?attr/selectableItemBackground"
-                            android:paddingStart="16dp"
-                            android:paddingEnd="16dp">
+                            android:paddingHorizontal="16dp">
 
-                            <ImageView
+                            <androidx.appcompat.widget.AppCompatImageView
                                 android:layout_width="24dp"
                                 android:layout_height="24dp"
                                 android:layout_gravity="center_vertical"
                                 android:layout_marginStart="4dp"
                                 android:src="@drawable/ic_search"
-                                app:tint="?attr/colorOnSurfaceVariant" />
+                                app:tint="@color/grey" />
 
-                            <TextView
+                            <com.google.android.material.textview.MaterialTextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="center_vertical"
                                 android:layout_marginStart="44dp"
-                                android:text="Search for a city or place..."
+                                android:text="@string/search_for_a_city_or_place"
                                 android:textAppearance="?attr/textAppearanceBodyLarge"
-                                android:textColor="?attr/colorOnSurfaceVariant" />
+                                android:textColor="@color/grey" />
 
                         </FrameLayout>
 
@@ -103,17 +117,30 @@
                     <com.google.android.material.textfield.TextInputLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="16dp"
-                        android:layout_marginEnd="16dp"
+                        android:layout_gravity="center"
                         android:layout_marginBottom="12dp"
-                        android:hint="@string/select_favourite"
-                        style="@style/Widget.Material3.TextInputLayout.OutlinedBox.ExposedDropdownMenu">
+                        android:background="@drawable/bg_background"
+                        android:elevation="2.5dp"
+                        android:padding="0dp"
+                        app:boxStrokeWidth="0dp"
+                        app:boxStrokeWidthFocused="0dp"
+                        app:endIconMode="dropdown_menu"
+                        app:expandedHintEnabled="false"
+                        app:hintEnabled="false">
 
-                        <androidx.appcompat.widget.AppCompatAutoCompleteTextView
+                        <com.google.android.material.textfield.MaterialAutoCompleteTextView
                             android:id="@+id/idACACTVDropdown"
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:inputType="none" />
+                            android:layout_height="match_parent"
+                            android:focusable="false"
+                            android:focusableInTouchMode="false"
+                            android:hint="@string/select_favourite"
+                            android:inputType="none"
+                            android:paddingStart="20dp"
+                            android:paddingEnd="20dp"
+                            android:textColor="?attr/colorText"
+                            android:textColorHint="@color/grey"
+                            android:textSize="16sp" />
 
                     </com.google.android.material.textfield.TextInputLayout>
 
@@ -121,33 +148,31 @@
                     <com.google.android.material.card.MaterialCardView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="16dp"
-                        android:layout_marginEnd="16dp"
                         android:layout_marginBottom="12dp"
-                        app:cardCornerRadius="20dp"
-                        app:cardElevation="4dp">
+                        app:cardCornerRadius="25dp"
+                        app:cardElevation="2.5dp"
+                        app:strokeWidth="0dp">
 
-                        <LinearLayout
+                        <androidx.appcompat.widget.LinearLayoutCompat
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:background="@drawable/bg_background"
                             android:gravity="center_horizontal"
                             android:orientation="vertical"
-                            android:paddingStart="20dp"
-                            android:paddingEnd="20dp"
-                            android:paddingTop="24dp"
-                            android:paddingBottom="20dp">
+                            android:padding="20dp">
 
-                            <TextView
+                            <com.google.android.material.textview.MaterialTextView
                                 android:id="@+id/idACTVCityName"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:gravity="center"
                                 android:text="@string/city_name"
                                 android:textAllCaps="true"
-                                android:textAppearance="?attr/textAppearanceHeadlineSmall"
+                                android:textColor="?attr/colorText"
+                                android:textSize="25sp"
                                 android:textStyle="bold" />
 
-                            <TextView
+                            <com.google.android.material.textview.MaterialTextView
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:gravity="center"
@@ -157,17 +182,18 @@
                                 android:textAppearance="?attr/textAppearanceLabelSmall"
                                 android:textColor="?attr/colorOnSurfaceVariant" />
 
-                            <TextView
+                            <com.google.android.material.textview.MaterialTextView
                                 android:id="@+id/idACTVUpdatedAt"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:gravity="center"
                                 android:text="@string/sunday_04_18_pm"
                                 android:textAllCaps="true"
-                                android:textAppearance="?attr/textAppearanceBodyMedium"
+                                android:textColor="?attr/colorText"
+                                android:textSize="14sp"
                                 android:textStyle="bold" />
 
-                            <TextView
+                            <com.google.android.material.textview.MaterialTextView
                                 android:id="@+id/idACTVTemperature"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
@@ -179,23 +205,24 @@
                                 android:textColor="?attr/colorPrimary"
                                 android:textStyle="bold" />
 
-                            <ImageView
+                            <androidx.appcompat.widget.AppCompatImageView
                                 android:id="@+id/idACIVIcon"
                                 android:layout_width="100dp"
                                 android:layout_height="100dp"
                                 android:layout_gravity="center_horizontal"
                                 app:srcCompat="@mipmap/ic_launcher" />
 
-                            <TextView
+                            <com.google.android.material.textview.MaterialTextView
                                 android:id="@+id/idACTVCondition"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:gravity="center"
                                 android:text="@string/condition"
-                                android:textAppearance="?attr/textAppearanceTitleLarge"
+                                android:textColor="?attr/colorText"
+                                android:textSize="22sp"
                                 android:textStyle="bold" />
 
-                        </LinearLayout>
+                        </androidx.appcompat.widget.LinearLayoutCompat>
 
                     </com.google.android.material.card.MaterialCardView>
 
@@ -203,144 +230,249 @@
                     <com.google.android.material.card.MaterialCardView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="16dp"
-                        android:layout_marginEnd="16dp"
-                        android:layout_marginBottom="20dp"
-                        app:cardCornerRadius="20dp"
-                        app:cardElevation="4dp">
+                        android:layout_marginBottom="12dp"
+                        app:cardCornerRadius="25dp"
+                        app:cardElevation="2.5dp"
+                        app:strokeWidth="0dp">
 
-                        <LinearLayout
+                        <androidx.appcompat.widget.LinearLayoutCompat
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:background="@drawable/bg_background"
                             android:orientation="vertical"
-                            android:paddingStart="8dp"
-                            android:paddingEnd="8dp"
-                            android:paddingTop="12dp"
-                            android:paddingBottom="12dp">
+                            android:padding="12dp">
 
                             <!-- Row 1: Pressure | Wind | Humidity -->
-                            <LinearLayout
+                            <androidx.appcompat.widget.LinearLayoutCompat
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:orientation="horizontal"
                                 android:weightSum="3">
 
-                                <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content"
-                                    android:layout_weight="1" android:gravity="center"
-                                    android:orientation="vertical" android:padding="8dp">
-                                    <ImageView android:layout_width="36dp" android:layout_height="36dp"
-                                        android:src="@drawable/pressure" app:tint="?attr/colorPrimary" />
-                                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
-                                        android:paddingTop="4dp" android:text="PRESSURE"
+                                <androidx.appcompat.widget.LinearLayoutCompat
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="1"
+                                    android:gravity="center"
+                                    android:orientation="vertical"
+                                    android:padding="8dp">
+
+                                    <androidx.appcompat.widget.AppCompatImageView
+                                        android:layout_width="36dp"
+                                        android:layout_height="36dp"
+                                        android:src="@drawable/pressure"
+                                        app:tint="?attr/colorPrimary"
+                                        tools:ignore="TooDeepLayout" />
+
+                                    <com.google.android.material.textview.MaterialTextView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:paddingTop="4dp"
+                                        android:text="@string/pressure"
                                         android:textAppearance="?attr/textAppearanceLabelSmall"
                                         android:textColor="?attr/colorOnSurfaceVariant" />
-                                    <TextView android:id="@+id/idACTVPressure"
-                                        android:layout_width="wrap_content" android:layout_height="wrap_content"
-                                        android:paddingTop="2dp" android:text="1010 mb"
-                                        android:textAppearance="?attr/textAppearanceBodyMedium" android:textStyle="bold" />
-                                </LinearLayout>
 
-                                <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content"
-                                    android:layout_weight="1" android:gravity="center"
-                                    android:orientation="vertical" android:padding="8dp">
-                                    <ImageView android:layout_width="36dp" android:layout_height="36dp"
-                                        android:src="@drawable/windspeed" app:tint="?attr/colorPrimary" />
-                                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
-                                        android:paddingTop="4dp" android:text="WIND"
+                                    <com.google.android.material.textview.MaterialTextView
+                                        android:id="@+id/idACTVPressure"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:paddingTop="2dp"
+                                        android:textColor="?attr/colorText"
+                                        android:textSize="14sp"
+                                        android:textStyle="bold" />
+
+                                </androidx.appcompat.widget.LinearLayoutCompat>
+
+                                <androidx.appcompat.widget.LinearLayoutCompat
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="1"
+                                    android:gravity="center"
+                                    android:orientation="vertical"
+                                    android:padding="8dp">
+
+                                    <androidx.appcompat.widget.AppCompatImageView
+                                        android:layout_width="36dp"
+                                        android:layout_height="36dp"
+                                        android:src="@drawable/wind_speed"
+                                        app:tint="?attr/colorPrimary" />
+
+                                    <com.google.android.material.textview.MaterialTextView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:paddingTop="4dp"
+                                        android:text="@string/wind"
                                         android:textAppearance="?attr/textAppearanceLabelSmall"
                                         android:textColor="?attr/colorOnSurfaceVariant" />
-                                    <TextView android:id="@+id/idACTVWindSpeed"
-                                        android:layout_width="wrap_content" android:layout_height="wrap_content"
-                                        android:paddingTop="2dp" android:text="10 km/h"
-                                        android:textAppearance="?attr/textAppearanceBodyMedium" android:textStyle="bold" />
-                                </LinearLayout>
 
-                                <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content"
-                                    android:layout_weight="1" android:gravity="center"
-                                    android:orientation="vertical" android:padding="8dp">
-                                    <ImageView android:layout_width="36dp" android:layout_height="36dp"
-                                        android:src="@drawable/humidity" app:tint="?attr/colorPrimary" />
-                                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
-                                        android:paddingTop="4dp" android:text="HUMIDITY"
+                                    <com.google.android.material.textview.MaterialTextView
+                                        android:id="@+id/idACTVWindSpeed"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:paddingTop="2dp"
+                                        android:textColor="?attr/colorText"
+                                        android:textSize="14sp"
+                                        android:textStyle="bold" />
+
+                                </androidx.appcompat.widget.LinearLayoutCompat>
+
+                                <androidx.appcompat.widget.LinearLayoutCompat
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="1"
+                                    android:gravity="center"
+                                    android:orientation="vertical"
+                                    android:padding="8dp">
+
+                                    <androidx.appcompat.widget.AppCompatImageView
+                                        android:layout_width="36dp"
+                                        android:layout_height="36dp"
+                                        android:src="@drawable/humidity"
+                                        app:tint="?attr/colorPrimary" />
+
+                                    <com.google.android.material.textview.MaterialTextView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:paddingTop="4dp"
+                                        android:text="@string/humidity"
                                         android:textAppearance="?attr/textAppearanceLabelSmall"
                                         android:textColor="?attr/colorOnSurfaceVariant" />
-                                    <TextView android:id="@+id/idACTVHumidity"
-                                        android:layout_width="wrap_content" android:layout_height="wrap_content"
-                                        android:paddingTop="2dp" android:text="50%"
-                                        android:textAppearance="?attr/textAppearanceBodyMedium" android:textStyle="bold" />
-                                </LinearLayout>
 
-                            </LinearLayout>
+                                    <com.google.android.material.textview.MaterialTextView
+                                        android:id="@+id/idACTVHumidity"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:paddingTop="2dp"
+                                        android:textColor="?attr/colorText"
+                                        android:textSize="14sp"
+                                        android:textStyle="bold" />
 
-                            <View android:layout_width="match_parent" android:layout_height="1dp"
-                                android:layout_marginStart="8dp" android:layout_marginEnd="8dp"
+                                </androidx.appcompat.widget.LinearLayoutCompat>
+
+                            </androidx.appcompat.widget.LinearLayoutCompat>
+
+                            <View
+                                android:layout_width="match_parent"
+                                android:layout_height="1dp"
+                                android:layout_marginStart="8dp"
+                                android:layout_marginEnd="8dp"
                                 android:background="?attr/colorOutlineVariant" />
 
-                            <!-- Row 2: UV Index | Feels Like | Visibility -->
-                            <LinearLayout
+                            <androidx.appcompat.widget.LinearLayoutCompat
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:orientation="horizontal"
                                 android:weightSum="3">
 
-                                <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content"
-                                    android:layout_weight="1" android:gravity="center"
-                                    android:orientation="vertical" android:padding="8dp">
-                                    <TextView android:layout_width="36dp" android:layout_height="36dp"
-                                        android:gravity="center" android:text="&#9728;" android:textSize="22sp"
-                                        android:textColor="?attr/colorPrimary"/>
-                                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
-                                        android:paddingTop="4dp" android:text="UV INDEX"
+                                <androidx.appcompat.widget.LinearLayoutCompat
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="1"
+                                    android:gravity="center"
+                                    android:orientation="vertical"
+                                    android:padding="8dp">
+
+                                    <androidx.appcompat.widget.AppCompatImageView
+                                        android:layout_width="36dp"
+                                        android:layout_height="36dp"
+                                        android:src="@drawable/uv_index"
+                                        app:tint="?attr/colorPrimary" />
+
+                                    <com.google.android.material.textview.MaterialTextView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:paddingTop="4dp"
+                                        android:text="@string/uv_index"
                                         android:textAppearance="?attr/textAppearanceLabelSmall"
                                         android:textColor="?attr/colorOnSurfaceVariant" />
-                                    <TextView android:id="@+id/idACTVUvIndex"
-                                        android:layout_width="wrap_content" android:layout_height="wrap_content"
-                                        android:paddingTop="2dp" android:text="3"
-                                        android:textAppearance="?attr/textAppearanceBodyMedium" android:textStyle="bold" />
-                                </LinearLayout>
 
-                                <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content"
-                                    android:layout_weight="1" android:gravity="center"
-                                    android:orientation="vertical" android:padding="8dp">
-                                    <TextView android:layout_width="36dp" android:layout_height="36dp"
-                                        android:gravity="center" android:text="&#127777;" android:textSize="22sp" />
-                                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
-                                        android:paddingTop="4dp" android:text="FEELS LIKE"
+                                    <com.google.android.material.textview.MaterialTextView
+                                        android:id="@+id/idACTVUvIndex"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:paddingTop="2dp"
+                                        android:textColor="?attr/colorText"
+                                        android:textSize="14sp"
+                                        android:textStyle="bold" />
+
+                                </androidx.appcompat.widget.LinearLayoutCompat>
+
+                                <androidx.appcompat.widget.LinearLayoutCompat
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="1"
+                                    android:gravity="center"
+                                    android:orientation="vertical"
+                                    android:padding="8dp">
+
+                                    <androidx.appcompat.widget.AppCompatImageView
+                                        android:layout_width="36dp"
+                                        android:layout_height="36dp"
+                                        android:src="@drawable/feels_like"
+                                        app:tint="?attr/colorPrimary" />
+
+                                    <com.google.android.material.textview.MaterialTextView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:paddingTop="4dp"
+                                        android:text="@string/feels_like"
                                         android:textAppearance="?attr/textAppearanceLabelSmall"
                                         android:textColor="?attr/colorOnSurfaceVariant" />
-                                    <TextView android:id="@+id/idACTVFeelsLike"
-                                        android:layout_width="wrap_content" android:layout_height="wrap_content"
-                                        android:paddingTop="2dp" android:text="22 C"
-                                        android:textAppearance="?attr/textAppearanceBodyMedium" android:textStyle="bold" />
-                                </LinearLayout>
 
-                                <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content"
-                                    android:layout_weight="1" android:gravity="center"
-                                    android:orientation="vertical" android:padding="8dp">
-                                    <TextView android:layout_width="36dp" android:layout_height="36dp"
-                                        android:gravity="center" android:text="&#128065;" android:textSize="22sp" />
-                                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
-                                        android:paddingTop="4dp" android:text="VISIBILITY"
+                                    <com.google.android.material.textview.MaterialTextView
+                                        android:id="@+id/idACTVFeelsLike"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:paddingTop="2dp"
+                                        android:textColor="?attr/colorText"
+                                        android:textSize="14sp"
+                                        android:textStyle="bold" />
+
+                                </androidx.appcompat.widget.LinearLayoutCompat>
+
+                                <androidx.appcompat.widget.LinearLayoutCompat
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="1"
+                                    android:gravity="center"
+                                    android:orientation="vertical"
+                                    android:padding="8dp">
+
+                                    <androidx.appcompat.widget.AppCompatImageView
+                                        android:layout_width="36dp"
+                                        android:layout_height="36dp"
+                                        android:src="@drawable/visibility"
+                                        app:tint="?attr/colorPrimary" />
+
+                                    <com.google.android.material.textview.MaterialTextView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:paddingTop="4dp"
+                                        android:text="@string/visibility"
                                         android:textAppearance="?attr/textAppearanceLabelSmall"
                                         android:textColor="?attr/colorOnSurfaceVariant" />
-                                    <TextView android:id="@+id/idACTVVisibility"
-                                        android:layout_width="wrap_content" android:layout_height="wrap_content"
-                                        android:paddingTop="2dp" android:text="10 km"
-                                        android:textAppearance="?attr/textAppearanceBodyMedium" android:textStyle="bold" />
-                                </LinearLayout>
 
-                            </LinearLayout>
+                                    <com.google.android.material.textview.MaterialTextView
+                                        android:id="@+id/idACTVVisibility"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:paddingTop="2dp"
+                                        android:textColor="?attr/colorText"
+                                        android:textSize="14sp"
+                                        android:textStyle="bold" />
 
-                        </LinearLayout>
+                                </androidx.appcompat.widget.LinearLayoutCompat>
+
+                            </androidx.appcompat.widget.LinearLayoutCompat>
+
+                        </androidx.appcompat.widget.LinearLayoutCompat>
 
                     </com.google.android.material.card.MaterialCardView>
 
                     <!-- Today's hourly forecast -->
-                    <TextView
+                    <com.google.android.material.textview.MaterialTextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="20dp"
-                        android:layout_marginEnd="20dp"
                         android:layout_marginBottom="8dp"
                         android:text="@string/today_s_weather_forecast"
                         android:textAppearance="?attr/textAppearanceTitleMedium"
@@ -350,18 +482,15 @@
                         android:id="@+id/idRVWeatherHours"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="12dp"
-                        android:layout_marginEnd="12dp"
-                        android:layout_marginBottom="20dp"
+                        android:layout_marginBottom="15dp"
                         android:orientation="horizontal"
-                        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+                        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                        tools:listitem="@layout/hours_item" />
 
                     <!-- 7-day weekly forecast -->
-                    <TextView
+                    <com.google.android.material.textview.MaterialTextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="20dp"
-                        android:layout_marginEnd="20dp"
                         android:layout_marginBottom="8dp"
                         android:text="@string/this_week_s_weather_forecast"
                         android:textAppearance="?attr/textAppearanceTitleMedium"
@@ -371,25 +500,16 @@
                         android:id="@+id/idRVWeatherDays"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="12dp"
-                        android:layout_marginEnd="12dp"
+                        android:layout_marginBottom="15dp"
                         android:orientation="horizontal"
-                        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+                        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                        tools:listitem="@layout/days_item" />
 
-                </LinearLayout>
+                </androidx.appcompat.widget.LinearLayoutCompat>
 
             </androidx.core.widget.NestedScrollView>
 
-        </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
-
-        <!-- Loading indicator overlaid on content area -->
-        <ProgressBar
-            android:id="@+id/idProgressBar"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:indeterminateTint="?attr/colorPrimary"
-            android:visibility="visible" />
+        </com.scwang.smart.refresh.layout.SmartRefreshLayout>
 
     </FrameLayout>
 
