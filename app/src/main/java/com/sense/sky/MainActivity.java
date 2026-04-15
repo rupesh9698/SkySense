@@ -58,26 +58,39 @@ public class MainActivity extends AppCompatActivity {
 
     public static final String WEATHER_API_KEY = BuildConfig.WEATHER_API_KEY;
     public static final String MAPS_API_KEY = BuildConfig.MAPS_API_KEY;
+
     // ── Constants ─────────────────────────────────────────────────────────────
+
     private static final int LOCATION_PERMISSION_REQUEST_CODE = 1;
     private static final long CACHE_TTL_MILLIS = 60 * 60 * 1000L; // 1 hour
+    private static final String KEY_LAST_JSON = "last_json";
+    private static final String KEY_LAST_LAT = "last_lat";
+    private static final String KEY_LAST_LON = "last_lon";
+    private static final String KEY_LAST_NAME = "last_name";
+    private static final String KEY_TEMP_UNIT = "temp_unit";
+
     // ── View binding ──────────────────────────────────────────────────────────
+
     private ActivityMainBinding binding;
 
     // ── Adapters / lists ──────────────────────────────────────────────────────
+
     private java.util.ArrayList<HoursModel> hoursModelArrayList;
     private java.util.ArrayList<DaysModel> daysModelArrayList;
     private HoursAdapter hoursAdapter;
     private DaysAdapter daysAdapter;
 
     // ── Location ──────────────────────────────────────────────────────────────
+
     private FusedLocationProviderClient fusedLocationClient;
 
     // ── Favourites ────────────────────────────────────────────────────────────
+
     private String[] favouriteNames = {};
     private ArrayAdapter<String> adapterItems;
 
     // ── State ─────────────────────────────────────────────────────────────────
+
     private String currentTemperatureUnit = "celsius";
     private Double lastLat = null;
     private Double lastLon = null;
@@ -85,10 +98,12 @@ public class MainActivity extends AppCompatActivity {
     private String lastDisplayName = "";
 
     // ── Places ────────────────────────────────────────────────────────────────
+
     private PlacesClient placesClient;
     private ActivityResultLauncher<Intent> placeAutocompleteLauncher;
 
     // ── Retrofit ──────────────────────────────────────────────────────────────
+
     private WeatherApiService weatherApiService;
     private Call<WeatherResponse> activeCall; // tracked so we can cancel on destroy
 
@@ -233,8 +248,12 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void requestLocationAndFetch() {
+
+        if (lastResponseJson != null) return;
+
         boolean fine = ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED;
         boolean coarse = ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED;
+
         if (!fine && !coarse) {
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION}, LOCATION_PERMISSION_REQUEST_CODE);
         } else {
@@ -638,6 +657,33 @@ public class MainActivity extends AppCompatActivity {
 
     private void showNoInternetDialog() {
         new MaterialAlertDialogBuilder(this).setTitle("No Internet Connection").setMessage("Please check your internet connection. The app will show cached data if available.").setPositiveButton("OK", (dialog, which) -> dialog.dismiss()).setCancelable(false).show();
+    }
+
+    @Override
+    protected void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+        if (lastResponseJson != null) outState.putString(KEY_LAST_JSON, lastResponseJson);
+        if (lastLat != null) outState.putDouble(KEY_LAST_LAT,  lastLat);
+        if (lastLon != null) outState.putDouble(KEY_LAST_LON,  lastLon);
+        outState.putString(KEY_LAST_NAME, lastDisplayName);
+        outState.putString(KEY_TEMP_UNIT, currentTemperatureUnit);
+    }
+
+    @Override
+    protected void onRestoreInstanceState(@NonNull Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+        currentTemperatureUnit = savedInstanceState.getString(KEY_TEMP_UNIT, "celsius");
+        lastDisplayName        = savedInstanceState.getString(KEY_LAST_NAME, "");
+        if (savedInstanceState.containsKey(KEY_LAST_LAT))
+            lastLat = savedInstanceState.getDouble(KEY_LAST_LAT);
+        if (savedInstanceState.containsKey(KEY_LAST_LON))
+            lastLon = savedInstanceState.getDouble(KEY_LAST_LON);
+
+        String savedJson = savedInstanceState.getString(KEY_LAST_JSON);
+        if (savedJson != null) {
+            lastResponseJson = savedJson;
+            parseAndDisplayJson(savedJson);
+        }
     }
 
     // ─────────────────────────────────────────────────────────────────────────
